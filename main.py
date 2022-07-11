@@ -1,8 +1,8 @@
-import sys
 import os
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
+print("Starting App")
 from reminders import get_reminder, add_reminder
 
 async def get_today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
