@@ -5,7 +5,6 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 print("Starting App")
 from reminders import get_reminder, add_reminder
 import datetime
-import pytz
 
 async def get_today(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 	today_tasks = get_reminder.by_day_of_week(None)
@@ -18,9 +17,7 @@ async def add_task(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
 
 
 async def callback_minute(context: ContextTypes.DEFAULT_TYPE) -> None:
-    today_tasks = get_reminder.by_day_of_week(None)
-    for task in today_tasks:
-        await context.bot.send_message(chat_id='701578028', text=task)
+    print("Runnig task")
     await context.bot.send_message(chat_id='701578028', text="Hello Amin")
 
 telegram_app = ApplicationBuilder().token(os.environ['TOKEN']).build()
@@ -30,12 +27,12 @@ telegram_app.add_handler(CommandHandler("add", add_task))
 
 job_queue = telegram_app.job_queue
 
-time = datetime.time(hour=6, minute=30,tzinfo=pytz.timezone('US/Eastern'))
+time = datetime.time(hour=20, minute=57,tzinfo=datetime.timezone.utc)
 print(datetime.datetime.now())
 print(time)
+print(job_queue.jobs())
 job_minute = job_queue.run_daily(callback_minute,time, days=(0, 1, 2, 3, 4, 5, 6))
 
-print(job_queue.jobs())
 
 telegram_app.run_polling()
 
